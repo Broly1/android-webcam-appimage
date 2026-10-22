@@ -2,6 +2,7 @@
 /temp_download/
 /appimagetool-x86_64.AppImage
 /*.AppImage
+/*.AppImage.zsync
 .DS_Store
 
 /scrcpy.dir/usr/bin/

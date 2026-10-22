@@ -12,7 +12,7 @@ FINAL_NAME="android-webcam-appimage-x86_64.AppImage"
 
 killall -9 scrcpy-webcam-rust scrcpy adb 2>/dev/null || true
 findmnt -rn -o TARGET | grep ".mount_androi" | xargs -r umount -l 2>/dev/null || true
-rm -f "$FINAL_NAME"
+rm -f "$FINAL_NAME" "$FINAL_NAME.zsync"
 
 if [ ! -f "$APPIMAGE_TOOL" ]; then
     echo " -> Downloading appimagetool..."
@@ -57,8 +57,11 @@ cp "$APPDIR/android-webcam.png" "$APPDIR/.DirIcon"
 cp "$APPDIR/android-webcam.png" "$BIN_DIR/scrcpy.png"
 
 export ARCH=x86_64
-"$APPIMAGE_TOOL" --no-appstream "$APPDIR" "$FINAL_NAME"
+# Update information for AppImageUpdate & co: appimagetool embeds it and writes
+# $FINAL_NAME.zsync, which goes on the GitHub release next to the AppImage.
+UPDATE_INFO="gh-releases-zsync|Broly1|android-webcam-appimage|latest|$FINAL_NAME.zsync"
+"$APPIMAGE_TOOL" --no-appstream -u "$UPDATE_INFO" "$APPDIR" "$FINAL_NAME"
 
 rm ./android-webcam.png ./android-webcam.desktop
 
-echo "🎉 Done: $FINAL_NAME"
+echo "🎉 Done: $FINAL_NAME and $FINAL_NAME.zsync"

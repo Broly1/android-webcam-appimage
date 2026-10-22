@@ -228,7 +228,30 @@ fn main() {
         .build();
     app.connect_startup(|_| install_app_icon());
     app.connect_activate(build_ui);
+    // Only the instance that ran the window gets "shutdown"; a second launch just hands over
+    // to it and exits, and must not take adb away from it.
+    app.connect_shutdown(|_| stop_bundled_adb_server());
     app.run();
+}
+
+/// The adb server forks into the background and outlives the app. Started from the bundled
+/// adb, it keeps the AppImage mounted and its file busy (it can't be replaced or deleted), so
+/// stop it on exit. A server started by another adb (the system's) is left alone.
+fn stop_bundled_adb_server() {
+    let Some(adb) = appdir().map(|d| d.join("usr").join("bin").join("adb")) else { return };
+    let Ok(procs) = fs::read_dir("/proc") else { return };
+    let ours = procs
+        .flatten()
+        .any(|p| fs::read_link(p.path().join("exe")).is_ok_and(|exe| exe == adb));
+    if !ours {
+        return;
+    }
+    debug_log("stopping the bundled adb server");
+    let _ = Command::new(&adb)
+        .arg("kill-server")
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status();
 }
 
 fn build_ui(app: &Application) {
