@@ -255,6 +255,13 @@ fn stop_bundled_adb_server() {
 }
 
 fn build_ui(app: &Application) {
+    // Launching the app again activates the running instance: bring its window forward. A
+    // second window would run its own device watcher and camera probes, which disrupt the
+    // stream (scrcpy fails with "Server connection failed").
+    if let Some(existing) = app.windows().into_iter().find(|w| w.is::<ApplicationWindow>()) {
+        existing.present();
+        return;
+    }
     let window = ApplicationWindow::builder()
         .application(app)
         .title(tr("app.title"))
