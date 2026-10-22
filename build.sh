@@ -8,10 +8,10 @@ BIN_DIR="$APPDIR/usr/bin"
 TEMP_DIR="$BASE_DIR/temp_download"
 APPIMAGE_TOOL="$BASE_DIR/appimagetool-x86_64.AppImage"
 URL_APPIMAGETOOL="https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
-FINAL_NAME="scrcpy-webcam-x86_64.AppImage"
+FINAL_NAME="android-webcam-appimage-x86_64.AppImage"
 
 killall -9 scrcpy-webcam-rust scrcpy adb 2>/dev/null || true
-findmnt -rn -o TARGET | grep ".mount_scrcpy" | xargs -r umount -l 2>/dev/null || true
+findmnt -rn -o TARGET | grep ".mount_androi" | xargs -r umount -l 2>/dev/null || true
 rm -f "$FINAL_NAME"
 
 if [ ! -f "$APPIMAGE_TOOL" ]; then

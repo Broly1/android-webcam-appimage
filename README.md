@@ -64,8 +64,8 @@ sudo apt install adb ffmpeg libsdl2-2.0-0 v4l2loopback-dkms
 1. **Connect your phone** via USB.
 2. **Download and Run**:
 ```bash
-chmod +x scrcpy-webcam-x86_64.AppImage
-./scrcpy-webcam-x86_64.AppImage
+chmod +x android-webcam-appimage-x86_64.AppImage
+./android-webcam-appimage-x86_64.AppImage
 
 ```
 
