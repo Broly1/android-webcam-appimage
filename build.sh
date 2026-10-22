@@ -48,11 +48,13 @@ if [[ "$DOWNLOAD" =~ ^[Yy]$ ]]; then
 fi
 
 cargo build --release
-cp target/release/scrcpy-webcam-rust "$BIN_DIR/"
+cp "${CARGO_TARGET_DIR:-target}/release/scrcpy-webcam-rust" "$BIN_DIR/"
 
 cp "$APPDIR/android-webcam.png" ./android-webcam.png
 cp "$APPDIR/android-webcam.desktop" ./android-webcam.desktop
 cp "$APPDIR/android-webcam.png" "$APPDIR/.DirIcon"
+# scrcpy 5 loads its window icon from scrcpy.png next to its binary
+cp "$APPDIR/android-webcam.png" "$BIN_DIR/scrcpy.png"
 
 export ARCH=x86_64
 "$APPIMAGE_TOOL" --no-appstream "$APPDIR" "$FINAL_NAME"

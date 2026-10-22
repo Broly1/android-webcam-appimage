@@ -1,6 +1,11 @@
 [Desktop Entry]
 Type=Application
 Name=Android Webcam
+Comment=Use your Android device as a webcam
+Comment[pt_BR]=Use seu dispositivo Android como webcam
+Comment[es]=Usa tu dispositivo Android como cámara web
 Exec=scrcpy-webcam-rust
 Icon=android-webcam
 Categories=Utility;
+Terminal=false
+StartupWMClass=com.android.webcam
